@@ -4,13 +4,14 @@
 using namespace std;
 
 extern Flags flags;
+extern string opCodeNames[];
 
 #define LAST MOV_IM
 
 Instruction::Instruction(instruction_t newInstruction) {
    instruction = newInstruction;
    opcode = decodeInstruction();
-   name = (opcode <= LAST) ? opCodeNames[opcode] : "INVALID";
+   name = opCodeNames[opcode];
 }
 
 
@@ -22,14 +23,14 @@ OpCode Instruction::decodeInstruction() {
                       
    OpCode opcode = INVALID;
     
-   
    // Unconditional Operations (Not Supported)
    if (condition == 0b1111) 
       opcode = UNSUPPORTED;
    
    // Condition not met
-   else if (!flags.isConditionValid(condition)) 
-      opcode = NOP;
+   // DEBUG
+   //else if (!flags.isConditionValid(condition)) 
+      //opcode = NOP;
    
    // Condition met
    else {
@@ -54,9 +55,16 @@ OpCode Instruction::decodeInstruction() {
          opcode = decodeBranchLinkInstruction();
 
       // Coprocessor instructions and Supervisor Call on page A5-215 (Not Supported)
-      else if (testPattern(op1, "11x")) 
+      else if (testPattern(op1, "11x")) {
          opcode = UNSUPPORTED;
+         //DEBUG
+         cout << "Fuck, coproc" << endl;
+      }
    }
+   
+   //DEBUG
+   if (opcode == UNSUPPORTED)
+      //name = opCodeNames[opcode];
    
    return opcode;
 }
@@ -478,7 +486,7 @@ OpCode Instruction::decodeMiscInstruction() {
    // Sanity Check
    assert(Extract(5, 23, instruction) == 0b00010);
    assert(Extract(1, 20, instruction) == 0);
-   assert(Extract(7, 20, instruction) == 0);
+   assert(Extract(1, 7, instruction) == 0);
    
    if (op2 == 0b001) {
    
@@ -696,11 +704,15 @@ OpCode Instruction::decodeDataImmedInstruction() {
 
 OpCode Instruction::decodeHalfMultInstruction() {
    OpCode opcode = UNSUPPORTED;
+   //DEBUG
+   cout << "Fuck, 1/2 multiply" << endl;
    return opcode;
 }
 
 OpCode Instruction::decodeMultInstruction() {
    OpCode opcode = UNSUPPORTED;
+   //DEBUG
+   cout << "Fuck, multiply" << endl;
    return opcode;
 }
 

@@ -43,6 +43,7 @@
    assert(test.opcode == code);\
 }
 
+
 // Default namespace
 using namespace std;
 
@@ -65,6 +66,7 @@ bool testPattern(int target, string pattern);
 
 void parseSim();
 unsigned int hexToUnsigned(string hexNum);
+unsigned int swizzle32(unsigned int data);
 
 
 

@@ -1,5 +1,6 @@
 #include "armsim.hpp"
 #include "Flags.hpp"
+#include "Instruction.hpp"
 
 
 void parseSim() {
@@ -7,6 +8,9 @@ void parseSim() {
    unsigned int pcSet = 0xABABABAB;
    unsigned int data;
    stringstream convert;
+   
+   //DEBUG
+   Instruction testInstruction = Instruction(0);
    
    // Check format
    cin >> token;
@@ -17,6 +21,7 @@ void parseSim() {
    cin >> token;
    pcSet = hexToUnsigned(token);
    // SET PROGRAM COUNTER
+   cout << "This is where I set the PC" << endl;
 
    
    // Check format
@@ -25,16 +30,22 @@ void parseSim() {
    cin >> token;
    assert(token.compare("MEMORY") == 0);
    
-   cin >> token;
    
    // Instruction Memory
+   cout << "This is where I load I-Mem" << endl;
    while (!cin.eof() && token.compare("DATA") != 0) {
       cin >> token;
       data = hexToUnsigned(token);
       // ADD TO INSTRUCTION MEMORY
+      //DEBUG
+      data = swizzle32(data);
+      cout << "Adding 0x" << std::hex << setfill('0') << setw(8) << data << " to I-Mem" << endl;
+      testInstruction = Instruction((instruction_t)data);
+      cout << "This instruction appears to be: " << testInstruction.name << endl;
    } 
    
    // Data Memory
+   cout << "This is where I load D-Mem" << endl;
    if (!cin.eof()) {
       // Check format
       cin >> token;
@@ -44,6 +55,7 @@ void parseSim() {
          cin >> token;
          data = hexToUnsigned(token);
          // ADD TO DATA MEMORY
+         cout << "Adding 0x" << std::hex << setfill('0') << setw(8) << data << " to D-Mem" << endl;
       }
    }
    
@@ -57,6 +69,17 @@ unsigned int hexToUnsigned(string hexNum) {
    convert >> std::hex >> data;
    
    return data;
+}
+
+unsigned int swizzle32(unsigned int data) {
+   unsigned int ret = 0x00000000;
+   
+   ret |= (data << 24) & (0xFF000000);
+   ret |= (data << 8) & (0x00FF0000);
+   ret |= (data >> 8) & (0x0000FF00);
+   ret |= (data >> 24) & (0x000000FF);
+   
+   return ret;
 }
 
 bool testPattern(int target, string pattern) {
