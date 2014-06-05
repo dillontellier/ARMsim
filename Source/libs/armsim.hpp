@@ -43,6 +43,13 @@
    assert(test.opcode == code);\
 }
 
+#define DecodeRaw(raw_t, swiz) { \
+   raw = raw_t;\
+   raw = (swiz == 1) ? swizzle32(raw) : raw;\
+   test = Instruction(raw);\
+   cout << test.name << endl;\
+}
+
 
 // Default namespace
 using namespace std;

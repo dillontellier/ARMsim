@@ -58,13 +58,10 @@ OpCode Instruction::decodeInstruction() {
       else if (testPattern(op1, "11x")) {
          opcode = UNSUPPORTED;
          //DEBUG
-         cout << "Fuck, coproc" << endl;
+         //cout << "Fuck, coproc" << endl;
       }
    }
    
-   //DEBUG
-   if (opcode == UNSUPPORTED)
-      //name = opCodeNames[opcode];
    
    return opcode;
 }

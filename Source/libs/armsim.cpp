@@ -34,11 +34,14 @@ void parseSim() {
    // Instruction Memory
    cout << "This is where I load I-Mem" << endl;
    while (!cin.eof() && token.compare("DATA") != 0) {
+      // GET ADDRESS
       cin >> token;
       data = hexToUnsigned(token);
+      cout << "At location 0x" << std::hex << setfill('0') << setw(8) << data << " in Memory" << endl;
       // ADD TO INSTRUCTION MEMORY
       //DEBUG
-      data = swizzle32(data);
+      cin >> token;
+      data = hexToUnsigned(token);
       cout << "Adding 0x" << std::hex << setfill('0') << setw(8) << data << " to I-Mem" << endl;
       testInstruction = Instruction((instruction_t)data);
       cout << "This instruction appears to be: " << testInstruction.name << endl;
