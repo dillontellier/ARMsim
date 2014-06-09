@@ -128,5 +128,108 @@ bool testPattern(int target, string pattern) {
 }
 
 
+void parseObjDump() {
+   string token = "N/A";
+   unsigned int pcSet = 0;
+   unsigned int data = 0;
+   unsigned int address = 0;
+   
+   stringstream convert;
+   
+   bool endOfSeg = false;
+   bool isAddr = false;
+  
+   cin >> token;
+   
+   while (!endOfSeg) {
+      
+      
+      if (token.compare("address") == 0) {
+         cin >> token;
+         //cout << "Token is: " << token << endl;
+         pcSet = hexToUnsigned(token);
+         cout << "PC: 0x" << std::hex << setfill('0') << setw(8) << pcSet << endl;
+      }
+      
+      else if(token.compare("Contents") == 0) {
+         cin >> token;
+         cin >> token;
+         cin >> token;
+         
+         // Instruction Memory
+         if (token.compare(".init:") == 0) {
+            isAddr = true;
+            
+            cout << "INSTRUCTION MEMORY" << endl;
+            
+            cin >> token;
+            
+            while (token.compare("Contents") != 0) {
+               
+               // Addresses
+               if (isAddr) {
+                  data = hexToUnsigned(token);
+                  //cout << "Address: " << std::hex << setfill('0') << setw(8) << data << endl;
+                  address = data;
+                  isAddr = false;
+               }
+               
+               // Data
+               else if (token.size() == 8 && token[0] != '.') {
+                  data = hexToUnsigned(token);
+                  cout << std::hex << setfill('0') << setw(8) << address;
+                  cout << " " << std::hex << setfill('0') << setw(8) << data << endl;
+                  address += 4;
+               }
+               
+               // Objdump stuff
+               else {
+                  cout << "Leftovers: " << token << endl;
+                  isAddr = true;
+               }
+               
+               cin >> token;
+            }
+         }
+         
+         else if (token.compare(".text:") == 0) {
+         }
+         
+         else if (token.compare(".fini:") == 0) {
+         }
+         
+         // Data Memory
+         else if (token.compare(".rodata:") == 0) {
+         }
+         
+         else if (token.compare(".eh_frame:") == 0) {
+         }
+         
+         else if (token.compare(".ctors:") == 0) {
+         }
+         
+         else if (token.compare(".dtors:") == 0) {
+         }
+         
+         else if (token.compare(".jcr:") == 0) {
+         }
+         
+         else if (token.compare(".data:") == 0) {
+         }
+         
+         // Comments and Debug Memory (Not used)
+         else if (token.compare(".comment:") == 0)
+            endOfSeg = true;
+            
+         else
+            endOfSeg = true;
+         
+      }
+   
+      else
+         cin >> token;
+   }
+}
+
 
 

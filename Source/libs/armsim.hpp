@@ -72,6 +72,7 @@ typedef unsigned char byte;
 bool testPattern(int target, string pattern);
 
 void parseSim();
+void parseObjDump();
 unsigned int hexToUnsigned(string hexNum);
 unsigned int swizzle32(unsigned int data);
 
