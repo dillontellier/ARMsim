@@ -139,7 +139,6 @@ void parseObjDump() {
                
                // Objdump stuff
                else {
-                  //cout << "Leftovers: " << token << endl;
                   isAddr = true;
                }
                
