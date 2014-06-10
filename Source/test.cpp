@@ -21,10 +21,11 @@ void printInstruction(instruction_t test) {
 }
 
 int main() {
-   instruction_t raw;
-   Instruction test = Instruction(0);
+   //instruction_t raw = 0x0;
+   //Instruction test = Instruction(0);
    
    #ifdef DEBUG
+   /*
    // Failed conditions
    cout << "Testing Failed Conditions" << endl;
    Validate(0x00000000, NOP);
@@ -42,9 +43,17 @@ int main() {
 
    for (int i = NOP; i < END; i++)
       cout << "Testing: " << opCodeNames[i] << endl;
+      */
    #endif
    
-   parseSim();
+   //parseSim();
+   // DecodeRaw(0xf0402de9, 1);
+   // DecodeRaw(0x64409fe5, 1);
+   // DecodeRaw(0x0030d4e5, 1);
+   // DecodeRaw(0x000053e3, 1);
+   // DecodeRaw(0xf080bd18, 1);
+   // DecodeRaw(0x58709fe5, 1);
+   parseObjDump();
    
    
    
