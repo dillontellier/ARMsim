@@ -37,12 +37,15 @@
 #define Extract(width, offset, original) ((original >> offset) & (0xFFFFFFFF >> ((8*(sizeof(original)) - width)))) 
 
 // Checks if an [instruction] is decoded to [code].
+//Note: Must define "Instruction test".
 #define Validate(instruction , code) { \
    raw = instruction;\
    test = Instruction(raw);\
    assert(test.opcode == code);\
 }
 
+// Decodes and instruction and prints the name.
+// Note: Must define "Instruction test".
 #define DecodeRaw(raw_t, swiz) { \
    raw = raw_t;\
    raw = (swiz == 1) ? swizzle32(raw) : raw;\
@@ -71,9 +74,29 @@ typedef unsigned char byte;
 //
 bool testPattern(int target, string pattern);
 
-void parseSim();
+// Parses an objdump of an elf32 binary file and loads the system memory.
+//
+// Params: none - Note 1: Must redirect objdump to stdin.
+//                Note 2: objdump must be called with -s and -x flags
+//
 void parseObjDump();
+
+// Converts a string representation of a hexadecimal number
+// and returns the integer representation of that number.
+//
+// Params: hexNum - The string containing the number.
+//                  Note: "0x" may be prepended.
+//
+// Return: An unsigned integer representation of the number.
+//
 unsigned int hexToUnsigned(string hexNum);
+
+// Swizzles (reverses endianness) of a given 32-bit data field.
+//
+// Params: data - The 32 bit data type to be swizzled.
+//
+// Return: A 32 bit unsigned integer endian-reversed data field.
+//
 unsigned int swizzle32(unsigned int data);
 
 

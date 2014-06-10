@@ -2,68 +2,6 @@
 #include "Flags.hpp"
 #include "Instruction.hpp"
 
-
-void parseSim() {
-   string token;
-   unsigned int pcSet = 0xABABABAB;
-   unsigned int data;
-   stringstream convert;
-   
-   //DEBUG
-   Instruction testInstruction = Instruction(0);
-   
-   // Check format
-   cin >> token;
-   assert(token.compare("PC") == 0);
-   
-   
-   // Program Counter
-   cin >> token;
-   pcSet = hexToUnsigned(token);
-   // SET PROGRAM COUNTER
-   cout << "This is where I set the PC" << endl;
-
-   
-   // Check format
-   cin  >> token;
-   assert(token.compare("INSTRUCTION") == 0);
-   cin >> token;
-   assert(token.compare("MEMORY") == 0);
-   
-   
-   // Instruction Memory
-   cout << "This is where I load I-Mem" << endl;
-   while (!cin.eof() && token.compare("DATA") != 0) {
-      // GET ADDRESS
-      cin >> token;
-      data = hexToUnsigned(token);
-      cout << "At location 0x" << std::hex << setfill('0') << setw(8) << data << " in Memory" << endl;
-      // ADD TO INSTRUCTION MEMORY
-      //DEBUG
-      cin >> token;
-      data = hexToUnsigned(token);
-      cout << "Adding 0x" << std::hex << setfill('0') << setw(8) << data << " to I-Mem" << endl;
-      testInstruction = Instruction((instruction_t)data);
-      cout << "This instruction appears to be: " << testInstruction.name << endl;
-   } 
-   
-   // Data Memory
-   cout << "This is where I load D-Mem" << endl;
-   if (!cin.eof()) {
-      // Check format
-      cin >> token;
-      assert(token.compare("MEMORY") == 0);
-      
-      while (!cin.eof()) {
-         cin >> token;
-         data = hexToUnsigned(token);
-         // ADD TO DATA MEMORY
-         cout << "Adding 0x" << std::hex << setfill('0') << setw(8) << data << " to D-Mem" << endl;
-      }
-   }
-   
-}
-
 unsigned int hexToUnsigned(string hexNum) {
    stringstream convert;
    unsigned int data;
@@ -130,6 +68,7 @@ bool testPattern(int target, string pattern) {
 
 void parseObjDump() {
    string token = "N/A";
+   string segment;
    unsigned int pcSet = 0;
    unsigned int data = 0;
    unsigned int address = 0;
@@ -138,6 +77,10 @@ void parseObjDump() {
    
    bool endOfSeg = false;
    bool isAddr = false;
+   
+   //DEBUG
+   Instruction testInstruction = Instruction(0);
+   cout << std::uppercase;
   
    cin >> token;
    
@@ -156,11 +99,15 @@ void parseObjDump() {
          cin >> token;
          cin >> token;
          
+         segment = token;
+         cout << endl << "Segment: " << segment << endl;
+         
          // Instruction Memory
-         if (token.compare(".init:") == 0) {
+         if (segment.compare(".init:") == 0 ||
+             segment.compare(".text:") == 0 ||
+             segment.compare(".fini:") == 0) {
+             
             isAddr = true;
-            
-            cout << "INSTRUCTION MEMORY" << endl;
             
             cin >> token;
             
@@ -169,22 +116,30 @@ void parseObjDump() {
                // Addresses
                if (isAddr) {
                   data = hexToUnsigned(token);
-                  //cout << "Address: " << std::hex << setfill('0') << setw(8) << data << endl;
                   address = data;
-                  isAddr = false;
+                  
+                  if (address != 0)
+                     isAddr = false;
                }
                
                // Data
                else if (token.size() == 8 && token[0] != '.') {
                   data = hexToUnsigned(token);
-                  cout << std::hex << setfill('0') << setw(8) << address;
-                  cout << " " << std::hex << setfill('0') << setw(8) << data << endl;
+                  data = swizzle32(data);
+                  
+                  //DEBUG
+                  cout << "ADDR:0x" << std::hex << setfill('0') << setw(8) << address;
+                  cout << " INST:0x" << std::hex << setfill('0') << setw(8) << data << " ";
+                  testInstruction = Instruction((instruction_t)data);
+                  cout << "OPCODE:" << testInstruction.name << endl;
+                  //
+                  
                   address += 4;
                }
                
                // Objdump stuff
                else {
-                  cout << "Leftovers: " << token << endl;
+                  //cout << "Leftovers: " << token << endl;
                   isAddr = true;
                }
                
@@ -192,30 +147,50 @@ void parseObjDump() {
             }
          }
          
-         else if (token.compare(".text:") == 0) {
-         }
-         
-         else if (token.compare(".fini:") == 0) {
-         }
          
          // Data Memory
-         else if (token.compare(".rodata:") == 0) {
+         else if (segment.compare(".rodata:") == 0 ||
+                  segment.compare(".eh_frame:") == 0 ||
+                  segment.compare(".ctors:") == 0 ||
+                  segment.compare(".dtors:") == 0 ||
+                  segment.compare(".jcr:") == 0 ||
+                  segment.compare(".data:") == 0) {
+                  
+            isAddr = true;
+            
+            cin >> token;
+
+            while (token.compare("Contents") != 0) {
+               
+               // Addresses
+               if (isAddr) {
+                  data = hexToUnsigned(token);
+                  address = data;
+                  isAddr = false;
+               }
+               
+               // Data
+               else if (token.size() == 8 && token[0] != '.') {
+                  data = hexToUnsigned(token);
+                  data = swizzle32(data);
+                  
+                  //DEBUG
+                  cout << "ADDR:0x" << std::hex << setfill('0') << setw(8) << address;
+                  cout << " DATA:0x" << std::hex << setfill('0') << setw(8) << data << endl;
+                  //
+                  
+                  address += 4;
+               }
+               
+               // Objdump stuff
+               else {
+                  isAddr = true;
+               }
+               
+               cin >> token;
+            }
          }
          
-         else if (token.compare(".eh_frame:") == 0) {
-         }
-         
-         else if (token.compare(".ctors:") == 0) {
-         }
-         
-         else if (token.compare(".dtors:") == 0) {
-         }
-         
-         else if (token.compare(".jcr:") == 0) {
-         }
-         
-         else if (token.compare(".data:") == 0) {
-         }
          
          // Comments and Debug Memory (Not used)
          else if (token.compare(".comment:") == 0)
