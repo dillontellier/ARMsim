@@ -1,0 +1,34 @@
+DIR=./shang
+FILE=shang
+ARM_FLAGS="-mtune=arm7 -mcpu=arm7 -marm"
+CC=arm-elf-gcc-4.6.3.exe
+
+rm $DIR/*.s
+rm $DIR/*.bin
+rm $DIR/*.dump
+
+
+cd $DIR
+
+for I in {0..3}
+do
+
+# Generate assembly
+echo Optimization level: $I
+echo Generating Assembly
+$CC $FILE.c -static -S -c $FILE.c $ARM_FLAGS
+mv $FILE.s $FILE"O"$I.s
+
+# Generate executable binary file
+echo Generating Executable
+$CC $FILE.c -static -o $FILE"O"$I.bin -O$I $ARM_FLAGS
+
+# Generate objdum
+echo Generating Objdump
+objdump -s -x $FILE"O"$I.bin > $FILE"O"$I.dump
+
+echo
+
+done
+
+cd ..
