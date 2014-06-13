@@ -1,3 +1,11 @@
+//*****************************************************************************
+//
+// Author: Dillon Tellier
+// Project: ARMsim
+// File: Flags.cpp
+// Last Revision: Spring 2014
+//
+//*****************************************************************************
 #include "Flags.hpp"
 #include "armsim.hpp"
 
@@ -89,7 +97,6 @@ bool Flags::isConditionValid(unsigned int condition) {
    return isValid;
 }
 
-// DEBUG
 void Flags::printFlags() {
    cout << "N: " << n << endl;
    cout << "Z: " << z << endl;

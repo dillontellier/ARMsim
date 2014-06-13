@@ -1,3 +1,11 @@
+//*****************************************************************************
+//
+// Author: Dillon Tellier
+// Project: ARMsim
+// File: Flags.hpp
+// Last Revision: Spring 2014
+//
+//*****************************************************************************
 #ifndef FLAGS_HPP
 #define FLAGS_HPP
 
@@ -26,7 +34,12 @@ public:
    //
    bool isConditionValid(unsigned int condition);
    
-   // DEBUG
+   // Prints the CPU flags to STDOUT
+   //
+   // Params: None
+   //
+   // Return: None
+   //
    void printFlags();
 };
 

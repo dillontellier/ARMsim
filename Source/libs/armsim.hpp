@@ -1,3 +1,11 @@
+//*****************************************************************************
+//
+// Author: Dillon Tellier
+// Project: ARMsim
+// File: armsim.hpp
+// Last Revision: Spring 2014
+//
+//*****************************************************************************
 #ifndef ARMSIM_HPP
 #define ARMSIM_HPP
 
@@ -11,24 +19,6 @@
 #include <cmath>
 #include <cassert>
 
-
-
-// Check System Endianess
-#undef LITTLE_ENDIAN
-#undef BIG_ENDIAN
-
-#ifdef _WIN32
-#define LITTLE_ENDIAN
-#endif
-#ifdef __i386__
-#define LITTLE_ENDIAN
-#endif
-#ifdef __x86_64__
-#define LITTLE_ENDIAN
-#endif
-#ifdef _BIG_ENDIAN
-#define BIG_ENDIAN
-#endif
 
 // Macros
 

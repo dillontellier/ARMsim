@@ -1,3 +1,11 @@
+//*****************************************************************************
+//
+// Author: Dillon Tellier
+// Project: ARMsim
+// File: Registers.hpp
+// Last Revision: Spring 2014
+//
+//*****************************************************************************
 #ifndef REGISTERS_HPP
 #define REGISTERS_HPP
 

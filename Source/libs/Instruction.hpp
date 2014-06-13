@@ -1,3 +1,11 @@
+//*****************************************************************************
+//
+// Author: Dillon Tellier
+// Project: ARMsim
+// File: Instruction.hpp
+// Last Revision: Spring 2014
+//
+//*****************************************************************************
 #ifndef INSTRUCTION_HPP
 #define INSTRUCTION_CPP
 
@@ -119,7 +127,7 @@ class Instruction{
       OpCode decodeEXLSPInstruction();        // A5-203
       OpCode decodeEXLSUInstruction();        // A5-204
       OpCode decodeMiscInstruction();         // A5-207
-      OpCode decodeHalfMultInstruction();  
+      OpCode decodeHalfMultInstruction();     
       OpCode decodeMultInstruction();
       
       

@@ -1,3 +1,11 @@
+//*****************************************************************************
+//
+// Author: Dillon Tellier
+// Project: ARMsim
+// File: armsim.cpp
+// Last Revision: Spring 2014
+//
+//*****************************************************************************
 #include "armsim.hpp"
 #include "Flags.hpp"
 #include "Instruction.hpp"
@@ -89,9 +97,11 @@ void parseObjDump() {
       
       if (token.compare("address") == 0) {
          cin >> token;
-         //cout << "Token is: " << token << endl;
          pcSet = hexToUnsigned(token);
+         
+         // Output parse results
          cout << "PC: 0x" << std::hex << setfill('0') << setw(8) << pcSet << endl;
+         //
       }
       
       else if(token.compare("Contents") == 0) {
@@ -127,7 +137,7 @@ void parseObjDump() {
                   data = hexToUnsigned(token);
                   data = swizzle32(data);
                   
-                  //DEBUG
+                  // Output parse results
                   cout << "ADDR:0x" << std::hex << setfill('0') << setw(8) << address;
                   cout << " INST:0x" << std::hex << setfill('0') << setw(8) << data << " ";
                   testInstruction = Instruction((instruction_t)data);
@@ -173,7 +183,7 @@ void parseObjDump() {
                   data = hexToUnsigned(token);
                   data = swizzle32(data);
                   
-                  //DEBUG
+                  // Output parse results
                   cout << "ADDR:0x" << std::hex << setfill('0') << setw(8) << address;
                   cout << " DATA:0x" << std::hex << setfill('0') << setw(8) << data << endl;
                   //
@@ -191,7 +201,7 @@ void parseObjDump() {
          }
          
          
-         // Comments and Debug Memory (Not used)
+         // Comments and Debug Memory (segments not loaded)
          else if (token.compare(".comment:") == 0)
             endOfSeg = true;
             

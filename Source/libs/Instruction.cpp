@@ -1,3 +1,11 @@
+//*****************************************************************************
+//
+// Author: Dillon Tellier
+// Project: ARMsim
+// File: Instruction.cpp
+// Last Revision: Spring 2014
+//
+//*****************************************************************************
 #include "Instruction.hpp"
 #include "Flags.hpp"
 
@@ -27,10 +35,14 @@ OpCode Instruction::decodeInstruction() {
    if (condition == 0b1111) 
       opcode = UNSUPPORTED;
    
+   
+   /* Removed in order to demonstrate decode capabilities
+   
    // Condition not met
-   // DEBUG
-   //else if (!flags.isConditionValid(condition)) 
-      //opcode = NOP;
+   else if (!flags.isConditionValid(condition)) 
+      opcode = NOP;
+      
+   */
    
    // Condition met
    else {
@@ -57,8 +69,6 @@ OpCode Instruction::decodeInstruction() {
       // Coprocessor instructions and Supervisor Call on page A5-215 (Not Supported)
       else if (testPattern(op1, "11x")) {
          opcode = UNSUPPORTED;
-         //DEBUG
-         //cout << "Fuck, coproc" << endl;
       }
    }
    
@@ -699,17 +709,15 @@ OpCode Instruction::decodeDataImmedInstruction() {
    return opcode;
 }
 
+// No support for multiply yet
+
 OpCode Instruction::decodeHalfMultInstruction() {
    OpCode opcode = UNSUPPORTED;
-   //DEBUG
-   cout << "Fuck, 1/2 multiply" << endl;
    return opcode;
 }
 
 OpCode Instruction::decodeMultInstruction() {
    OpCode opcode = UNSUPPORTED;
-   //DEBUG
-   cout << "Fuck, multiply" << endl;
    return opcode;
 }
 
