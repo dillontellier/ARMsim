@@ -1,8 +1,20 @@
-DIR=./shang
+###############################################################################
+#
+# Author: Dillon Tellier
+# Project: ARMsim
+# File: generate
+# Last Revision: Spring 2014
+#
+# Note: Must be run from patent directory of $DIR
+#
+###############################################################################
+
+DIR=./shang 
 FILE=shang
 ARM_FLAGS="-mtune=arm7 -mcpu=arm7 -marm"
 CC=arm-elf-gcc-4.6.3.exe
 
+# Remove old files
 rm $DIR/*.s
 rm $DIR/*.bin
 rm $DIR/*.dump
